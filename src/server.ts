@@ -49,8 +49,8 @@ export async function startMcpServer() {
                 inputSchema: {
                     type: 'object',
                     properties: {
-                        perPage: { type: 'integer', description: 'Items per page' },
-                        page: { type: 'integer', description: 'Page number' },
+                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100. Use pagination for large datasets.', default: 10, minimum: 1, maximum: 100 },
+                        page: { type: 'integer', description: 'Page number for pagination. Default: 1. Increment to get next page of results.', default: 1, minimum: 1 },
                         search: { type: 'string', description: 'Search term' },
                         status: { type: 'string', description: 'Product status', enum: ['publish', 'draft', 'private', 'pending'] },
                         category: { type: 'string', description: 'Category ID' },
@@ -194,8 +194,8 @@ export async function startMcpServer() {
                     type: 'object',
                     properties: {
                         productId: { type: 'integer', description: 'Product ID' },
-                        perPage: { type: 'integer', description: 'Items per page' },
-                        page: { type: 'integer', description: 'Page number' }
+                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
+                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 }
                     },
                     required: ['productId']
                 }
@@ -206,8 +206,8 @@ export async function startMcpServer() {
                 inputSchema: {
                     type: 'object',
                     properties: {
-                        perPage: { type: 'integer', description: 'Items per page' },
-                        page: { type: 'integer', description: 'Page number' },
+                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
+                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 },
                         search: { type: 'string', description: 'Search term' },
                         parent: { type: 'integer', description: 'Parent category ID' },
                         hideEmpty: { type: 'boolean', description: 'Hide empty categories' }
@@ -220,8 +220,8 @@ export async function startMcpServer() {
                 inputSchema: {
                     type: 'object',
                     properties: {
-                        perPage: { type: 'integer', description: 'Items per page' },
-                        page: { type: 'integer', description: 'Page number' },
+                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
+                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 },
                         search: { type: 'string', description: 'Search term' },
                         hideEmpty: { type: 'boolean', description: 'Hide empty tags' }
                     }
@@ -234,8 +234,8 @@ export async function startMcpServer() {
                     type: 'object',
                     properties: {
                         productId: { type: 'integer', description: 'Product ID (optional)' },
-                        perPage: { type: 'integer', description: 'Items per page' },
-                        page: { type: 'integer', description: 'Page number' },
+                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
+                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 },
                         status: { type: 'string', description: 'Review status', enum: ['all', 'hold', 'approved', 'spam', 'trash'] }
                     }
                 }
@@ -248,8 +248,8 @@ export async function startMcpServer() {
                 inputSchema: {
                     type: 'object',
                     properties: {
-                        perPage: { type: 'integer', description: 'Items per page' },
-                        page: { type: 'integer', description: 'Page number' },
+                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
+                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 },
                         status: {
                             type: 'array',
                             items: { type: 'string', enum: ['pending', 'processing', 'on-hold', 'completed', 'cancelled', 'refunded', 'failed'] },
@@ -438,8 +438,8 @@ export async function startMcpServer() {
                 inputSchema: {
                     type: 'object',
                     properties: {
-                        perPage: { type: 'integer', description: 'Items per page' },
-                        page: { type: 'integer', description: 'Page number' },
+                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
+                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 },
                         search: { type: 'string', description: 'Search term' },
                         email: { type: 'string', description: 'Customer email' },
                         role: { type: 'string', description: 'Customer role', enum: ['all', 'customer', 'administrator', 'shop_manager'] },
@@ -525,8 +525,8 @@ export async function startMcpServer() {
                 inputSchema: {
                     type: 'object',
                     properties: {
-                        perPage: { type: 'integer', description: 'Items per page' },
-                        page: { type: 'integer', description: 'Page number' },
+                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
+                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 },
                         search: { type: 'string', description: 'Search term' },
                         code: { type: 'string', description: 'Coupon code' }
                     }
@@ -633,8 +633,8 @@ export async function startMcpServer() {
                         period: { type: 'string', description: 'Report period', enum: ['week', 'month', 'last_month', 'year'] },
                         dateMin: { type: 'string', description: 'Start date (YYYY-MM-DD)' },
                         dateMax: { type: 'string', description: 'End date (YYYY-MM-DD)' },
-                        perPage: { type: 'integer', description: 'Items per page' },
-                        page: { type: 'integer', description: 'Page number' }
+                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
+                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 }
                     }
                 }
             },
@@ -671,8 +671,8 @@ export async function startMcpServer() {
                         period: { type: 'string', description: 'Report period', enum: ['week', 'month', 'last_month', 'year'] },
                         dateMin: { type: 'string', description: 'Start date (YYYY-MM-DD)' },
                         dateMax: { type: 'string', description: 'End date (YYYY-MM-DD)' },
-                        perPage: { type: 'integer', description: 'Items per page' },
-                        page: { type: 'integer', description: 'Page number' }
+                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
+                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 }
                     }
                 }
             },
@@ -682,8 +682,8 @@ export async function startMcpServer() {
                 inputSchema: {
                     type: 'object',
                     properties: {
-                        perPage: { type: 'integer', description: 'Items per page' },
-                        page: { type: 'integer', description: 'Page number' }
+                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
+                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 }
                     }
                 }
             },
@@ -693,8 +693,8 @@ export async function startMcpServer() {
                 inputSchema: {
                     type: 'object',
                     properties: {
-                        perPage: { type: 'integer', description: 'Items per page' },
-                        page: { type: 'integer', description: 'Page number' }
+                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
+                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 }
                     }
                 }
             },
@@ -782,8 +782,8 @@ export async function startMcpServer() {
                     type: 'object',
                     properties: {
                         taxClass: { type: 'string', description: 'Tax class' },
-                        perPage: { type: 'integer', description: 'Items per page' },
-                        page: { type: 'integer', description: 'Page number' }
+                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
+                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 }
                     }
                 }
             },
@@ -924,8 +924,8 @@ export async function startMcpServer() {
                 inputSchema: {
                     type: 'object',
                     properties: {
-                        perPage: { type: 'integer', description: 'Items per page' },
-                        page: { type: 'integer', description: 'Page number' },
+                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
+                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 },
                         status: { type: 'string', description: 'Webhook status', enum: ['active', 'paused', 'disabled'] }
                     }
                 }
