@@ -1,6 +1,6 @@
 {
     "name": "@lockon0927/woocommerce-mcp",
-    "version": "1.0.0",
+    "version": "1.0.5",
     "description": "MCP server for WooCommerce integration",
     "main": "dist/index.js",
     "type": "module",

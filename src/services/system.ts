@@ -98,7 +98,7 @@ export class SystemService extends BaseService {
     // Webhooks
     async listWebhooks(params?: any) {
         return this.handleRequest(
-            this.client.get('/webhooks', { params })
+            this.client.get('/webhooks', { params: this.toSnakeCase(params) })
         );
     }
 

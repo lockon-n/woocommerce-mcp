@@ -11,7 +11,7 @@ import {
 export class ProductService extends BaseService {
     async listProducts(params: ProductParams) {
         return this.handleRequest(
-            this.client.get('/products', { params })
+            this.client.get('/products', { params: this.toSnakeCase(params) })
         );
     }
 
@@ -89,7 +89,7 @@ export class ProductService extends BaseService {
     // Product categories
     async listCategories(params: any) {
         return this.handleRequest(
-            this.client.get('/products/categories', { params })
+            this.client.get('/products/categories', { params: this.toSnakeCase(params) })
         );
     }
 
@@ -114,7 +114,7 @@ export class ProductService extends BaseService {
     // Product tags
     async listTags(params: any) {
         return this.handleRequest(
-            this.client.get('/products/tags', { params })
+            this.client.get('/products/tags', { params: this.toSnakeCase(params) })
         );
     }
 
@@ -127,7 +127,7 @@ export class ProductService extends BaseService {
     // Product attributes
     async listAttributes(params: any) {
         return this.handleRequest(
-            this.client.get('/products/attributes', { params })
+            this.client.get('/products/attributes', { params: this.toSnakeCase(params) })
         );
     }
 
@@ -140,7 +140,7 @@ export class ProductService extends BaseService {
     // Product reviews
     async listReviews(params: any) {
         return this.handleRequest(
-            this.client.get('/products/reviews', { params })
+            this.client.get('/products/reviews', { params: this.toSnakeCase(params) })
         );
     }
 

@@ -59,6 +59,25 @@ export class BaseService {
         );
     }
 
+    /**
+     * Convert camelCase object keys to snake_case for WooCommerce API
+     */
+    protected toSnakeCase(params: any): any {
+        if (!params || typeof params !== 'object') {
+            return params;
+        }
+
+        const result: any = {};
+        for (const key in params) {
+            if (params.hasOwnProperty(key)) {
+                // Convert camelCase to snake_case
+                const snakeKey = key.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+                result[snakeKey] = params[key];
+            }
+        }
+        return result;
+    }
+
     protected async handleRequest<T>(request: Promise<any>): Promise<T> {
         try {
             const response = await request;
@@ -67,7 +86,7 @@ export class BaseService {
             if (error.response) {
                 const message = error.response.data?.message || error.response.data?.code || error.message;
                 const status = error.response.status;
-                
+
                 if (status === 404) {
                     throw new Error(`WooCommerce API endpoint not found. Please check if WooCommerce is installed and REST API is enabled. URL: ${error.config?.url}`);
                 } else if (status === 401) {
@@ -75,7 +94,7 @@ export class BaseService {
                 } else if (status === 403) {
                     throw new Error(`WooCommerce API access forbidden. Please check your API key permissions.`);
                 }
-                
+
                 throw new Error(`WooCommerce API error: ${message} (Status: ${status})`);
             }
             throw error;

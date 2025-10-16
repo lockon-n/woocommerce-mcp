@@ -10,7 +10,7 @@ import {
 export class CustomerService extends BaseService {
     async listCustomers(params: CustomerParams) {
         return this.handleRequest(
-            this.client.get('/customers', { params })
+            this.client.get('/customers', { params: this.toSnakeCase(params) })
         );
     }
 
@@ -64,10 +64,10 @@ export class CustomerService extends BaseService {
     async getCustomerOrders(customerId: number, params?: any) {
         return this.handleRequest(
             this.client.get('/orders', {
-                params: {
+                params: this.toSnakeCase({
                     customer: customerId,
                     ...params
-                }
+                })
             })
         );
     }

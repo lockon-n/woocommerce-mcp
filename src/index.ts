@@ -19,18 +19,6 @@ if (missingEnvVars.length > 0) {
     process.exit(1);
 }
 
-// Optional environment variables check
-const optionalEnvVars = ['WORDPRESS_USERNAME', 'WORDPRESS_PASSWORD'];
-const missingOptionalEnvVars = optionalEnvVars.filter(envVar => !process.env[envVar]);
-
-if (missingOptionalEnvVars.length > 0) {
-    console.warn('Warning: Some optional environment variables are not set:');
-    missingOptionalEnvVars.forEach(envVar => {
-        console.warn(`  - ${envVar}`);
-    });
-    console.warn('Some features may be limited.\n');
-}
-
 // Start the MCP server
 startMcpServer()
     .then(() => {

@@ -10,7 +10,7 @@ import {
 export class CouponService extends BaseService {
     async listCoupons(params: CouponParams) {
         return this.handleRequest(
-            this.client.get('/coupons', { params })
+            this.client.get('/coupons', { params: this.toSnakeCase(params) })
         );
     }
 

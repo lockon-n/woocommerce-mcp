@@ -10,7 +10,7 @@ import {
 export class OrderService extends BaseService {
     async listOrders(params: OrderParams) {
         return this.handleRequest(
-            this.client.get('/orders', { params })
+            this.client.get('/orders', { params: this.toSnakeCase(params) })
         );
     }
 
@@ -64,7 +64,7 @@ export class OrderService extends BaseService {
     // Order notes
     async listOrderNotes(orderId: number, params?: any) {
         return this.handleRequest(
-            this.client.get(`/orders/${orderId}/notes`, { params })
+            this.client.get(`/orders/${orderId}/notes`, { params: this.toSnakeCase(params) })
         );
     }
 
@@ -91,7 +91,7 @@ export class OrderService extends BaseService {
     // Refunds
     async listRefunds(orderId: number, params?: any) {
         return this.handleRequest(
-            this.client.get(`/orders/${orderId}/refunds`, { params })
+            this.client.get(`/orders/${orderId}/refunds`, { params: this.toSnakeCase(params) })
         );
     }
 

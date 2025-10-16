@@ -18,7 +18,7 @@ export async function startMcpServer() {
     const server = new Server(
         {
             name: 'woocommerce-mcp-server',
-            version: '1.0.0',
+            version: '1.0.5',
         },
         {
             capabilities: {
@@ -45,12 +45,12 @@ export async function startMcpServer() {
             // Product tools
             {
                 name: 'woo_products_list',
-                description: 'List products with optional filters',
+                description: 'List products with optional filters. IMPORTANT: Use perPage parameter to control how many results to return (default is 10, max is 100). Use page parameter for pagination.',
                 inputSchema: {
                     type: 'object',
                     properties: {
-                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100. Use pagination for large datasets.', default: 10, minimum: 1, maximum: 100 },
-                        page: { type: 'integer', description: 'Page number for pagination. Default: 1. Increment to get next page of results.', default: 1, minimum: 1 },
+                        perPage: { type: 'integer', description: 'Number of items to return per page (default: 10, max: 100). Always specify this to control result size.' },
+                        page: { type: 'integer', description: 'Page number for pagination (default: 1). Use with perPage to navigate through results.' },
                         search: { type: 'string', description: 'Search term' },
                         status: { type: 'string', description: 'Product status', enum: ['publish', 'draft', 'private', 'pending'] },
                         category: { type: 'string', description: 'Category ID' },
@@ -189,25 +189,25 @@ export async function startMcpServer() {
             },
             {
                 name: 'woo_products_variations_list',
-                description: 'List product variations',
+                description: 'List product variations. Use perPage and page parameters for pagination (default: 10 items per page).',
                 inputSchema: {
                     type: 'object',
                     properties: {
                         productId: { type: 'integer', description: 'Product ID' },
-                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
-                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 }
+                        perPage: { type: 'integer', description: 'Number of items per page (default: 10, max: 100)' },
+                        page: { type: 'integer', description: 'Page number (default: 1)' }
                     },
                     required: ['productId']
                 }
             },
             {
                 name: 'woo_products_categories_list',
-                description: 'List product categories',
+                description: 'List product categories. Use perPage and page parameters for pagination (default: 10 items per page).',
                 inputSchema: {
                     type: 'object',
                     properties: {
-                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
-                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 },
+                        perPage: { type: 'integer', description: 'Number of items per page (default: 10, max: 100)' },
+                        page: { type: 'integer', description: 'Page number (default: 1)' },
                         search: { type: 'string', description: 'Search term' },
                         parent: { type: 'integer', description: 'Parent category ID' },
                         hideEmpty: { type: 'boolean', description: 'Hide empty categories' }
@@ -215,13 +215,46 @@ export async function startMcpServer() {
                 }
             },
             {
-                name: 'woo_products_tags_list',
-                description: 'List product tags',
+                name: 'woo_products_categories_create',
+                description: 'Create a new product category',
                 inputSchema: {
                     type: 'object',
                     properties: {
-                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
-                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 },
+                        categoryData: {
+                            type: 'object',
+                            required: ['name'],
+                            properties: {
+                                name: { type: 'string', description: 'Category name' },
+                                slug: { type: 'string', description: 'Category slug' },
+                                parent: { type: 'integer', description: 'Parent category ID' },
+                                description: { type: 'string', description: 'Category description' },
+                                display: {
+                                    type: 'string',
+                                    description: 'Display type',
+                                    enum: ['default', 'products', 'subcategories', 'both']
+                                },
+                                image: {
+                                    type: 'object',
+                                    properties: {
+                                        src: { type: 'string', description: 'Image URL' },
+                                        alt: { type: 'string', description: 'Image alt text' }
+                                    }
+                                },
+                                menuOrder: { type: 'integer', description: 'Menu order' }
+                            }
+                        }
+                    },
+                    required: ['categoryData']
+                }
+            },
+            {
+                name: 'woo_products_tags_list',
+                description: 'List product tags. Use perPage and page parameters for pagination (default: 10 items per page).',
+                inputSchema: {
+                    type: 'object',
+                    properties: {
+                        perPage: { type: 'integer', description: 'Number of items per page (default: 10, max: 100)' },
+                        page: { type: 'integer', description: 'Page number (default: 1)' },
                         search: { type: 'string', description: 'Search term' },
                         hideEmpty: { type: 'boolean', description: 'Hide empty tags' }
                     }
@@ -229,13 +262,13 @@ export async function startMcpServer() {
             },
             {
                 name: 'woo_products_reviews_list',
-                description: 'List product reviews',
+                description: 'List product reviews. Use perPage and page parameters for pagination (default: 10 items per page).',
                 inputSchema: {
                     type: 'object',
                     properties: {
                         productId: { type: 'integer', description: 'Product ID (optional)' },
-                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
-                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 },
+                        perPage: { type: 'integer', description: 'Number of items per page (default: 10, max: 100)' },
+                        page: { type: 'integer', description: 'Page number (default: 1)' },
                         status: { type: 'string', description: 'Review status', enum: ['all', 'hold', 'approved', 'spam', 'trash'] }
                     }
                 }
@@ -244,12 +277,12 @@ export async function startMcpServer() {
             // Order tools
             {
                 name: 'woo_orders_list',
-                description: 'List orders with optional filters',
+                description: 'List orders with optional filters. IMPORTANT: Use perPage parameter to control how many results to return (default is 10, max is 100). Use page parameter for pagination.',
                 inputSchema: {
                     type: 'object',
                     properties: {
-                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
-                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 },
+                        perPage: { type: 'integer', description: 'Number of items to return per page (default: 10, max: 100). Always specify this to control result size.' },
+                        page: { type: 'integer', description: 'Page number for pagination (default: 1). Use with perPage to navigate through results.' },
                         status: {
                             type: 'array',
                             items: { type: 'string', enum: ['pending', 'processing', 'on-hold', 'completed', 'cancelled', 'refunded', 'failed'] },
@@ -434,12 +467,12 @@ export async function startMcpServer() {
             // Customer tools
             {
                 name: 'woo_customers_list',
-                description: 'List customers with optional filters',
+                description: 'List customers with optional filters. IMPORTANT: Use perPage parameter to control how many results to return (default is 10, max is 100). Use page parameter for pagination.',
                 inputSchema: {
                     type: 'object',
                     properties: {
-                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
-                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 },
+                        perPage: { type: 'integer', description: 'Number of items to return per page (default: 10, max: 100). Always specify this to control result size.' },
+                        page: { type: 'integer', description: 'Page number for pagination (default: 1). Use with perPage to navigate through results.' },
                         search: { type: 'string', description: 'Search term' },
                         email: { type: 'string', description: 'Customer email' },
                         role: { type: 'string', description: 'Customer role', enum: ['all', 'customer', 'administrator', 'shop_manager'] },
@@ -521,12 +554,12 @@ export async function startMcpServer() {
             // Coupon tools
             {
                 name: 'woo_coupons_list',
-                description: 'List coupons with optional filters',
+                description: 'List coupons with optional filters. IMPORTANT: Use perPage parameter to control how many results to return (default is 10, max is 100). Use page parameter for pagination.',
                 inputSchema: {
                     type: 'object',
                     properties: {
-                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
-                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 },
+                        perPage: { type: 'integer', description: 'Number of items to return per page (default: 10, max: 100). Always specify this to control result size.' },
+                        page: { type: 'integer', description: 'Page number for pagination (default: 1). Use with perPage to navigate through results.' },
                         search: { type: 'string', description: 'Search term' },
                         code: { type: 'string', description: 'Coupon code' }
                     }
@@ -626,15 +659,15 @@ export async function startMcpServer() {
             },
             {
                 name: 'woo_reports_top_sellers',
-                description: 'Get top sellers report',
+                description: 'Get top sellers report. Use perPage and page parameters to control pagination.',
                 inputSchema: {
                     type: 'object',
                     properties: {
                         period: { type: 'string', description: 'Report period', enum: ['week', 'month', 'last_month', 'year'] },
                         dateMin: { type: 'string', description: 'Start date (YYYY-MM-DD)' },
                         dateMax: { type: 'string', description: 'End date (YYYY-MM-DD)' },
-                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
-                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 }
+                        perPage: { type: 'integer', description: 'Number of items per page (default: 10, max: 100)' },
+                        page: { type: 'integer', description: 'Page number (default: 1)' }
                     }
                 }
             },
@@ -664,37 +697,37 @@ export async function startMcpServer() {
             },
             {
                 name: 'woo_reports_products',
-                description: 'Get products report',
+                description: 'Get products report. Use perPage and page parameters to control pagination.',
                 inputSchema: {
                     type: 'object',
                     properties: {
                         period: { type: 'string', description: 'Report period', enum: ['week', 'month', 'last_month', 'year'] },
                         dateMin: { type: 'string', description: 'Start date (YYYY-MM-DD)' },
                         dateMax: { type: 'string', description: 'End date (YYYY-MM-DD)' },
-                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
-                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 }
+                        perPage: { type: 'integer', description: 'Number of items per page (default: 10, max: 100)' },
+                        page: { type: 'integer', description: 'Page number (default: 1)' }
                     }
                 }
             },
             {
                 name: 'woo_reports_stock',
-                description: 'Get stock report',
+                description: 'Get stock report. Use perPage and page parameters to control pagination.',
                 inputSchema: {
                     type: 'object',
                     properties: {
-                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
-                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 }
+                        perPage: { type: 'integer', description: 'Number of items per page (default: 10, max: 100)' },
+                        page: { type: 'integer', description: 'Page number (default: 1)' }
                     }
                 }
             },
             {
                 name: 'woo_reports_low_stock',
-                description: 'Get low stock report',
+                description: 'Get low stock report. Use perPage and page parameters to control pagination.',
                 inputSchema: {
                     type: 'object',
                     properties: {
-                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
-                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 }
+                        perPage: { type: 'integer', description: 'Number of items per page (default: 10, max: 100)' },
+                        page: { type: 'integer', description: 'Page number (default: 1)' }
                     }
                 }
             },
@@ -777,13 +810,13 @@ export async function startMcpServer() {
             // Tax tools
             {
                 name: 'woo_tax_rates_list',
-                description: 'List tax rates',
+                description: 'List tax rates. Use perPage and page parameters to control pagination.',
                 inputSchema: {
                     type: 'object',
                     properties: {
                         taxClass: { type: 'string', description: 'Tax class' },
-                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
-                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 }
+                        perPage: { type: 'integer', description: 'Number of items per page (default: 10, max: 100)' },
+                        page: { type: 'integer', description: 'Page number (default: 1)' }
                     }
                 }
             },
@@ -920,12 +953,12 @@ export async function startMcpServer() {
             },
             {
                 name: 'woo_webhooks_list',
-                description: 'List webhooks',
+                description: 'List webhooks. Use perPage and page parameters to control pagination.',
                 inputSchema: {
                     type: 'object',
                     properties: {
-                        perPage: { type: 'integer', description: 'Number of items per page. Default: 10, Maximum: 100.', default: 10, minimum: 1, maximum: 100 },
-                        page: { type: 'integer', description: 'Page number for pagination. Default: 1.', default: 1, minimum: 1 },
+                        perPage: { type: 'integer', description: 'Number of items per page (default: 10, max: 100)' },
+                        page: { type: 'integer', description: 'Page number (default: 1)' },
                         status: { type: 'string', description: 'Webhook status', enum: ['active', 'paused', 'disabled'] }
                     }
                 }
@@ -987,6 +1020,9 @@ export async function startMcpServer() {
                     break;
                 case 'woo_products_categories_list':
                     result = await productService.listCategories(args as any);
+                    break;
+                case 'woo_products_categories_create':
+                    result = await productService.createCategory((args as any).categoryData);
                     break;
                 case 'woo_products_tags_list':
                     result = await productService.listTags(args as any);
@@ -1173,7 +1209,7 @@ export async function startMcpServer() {
                 return {
                     content: [{
                         type: 'text',
-                        text: JSON.stringify(result, null, 2)
+                        text: JSON.stringify(result, null, 2).replace(/\\/g, '')
                     }]
                 };
             } catch (error) {
@@ -1192,7 +1228,7 @@ export async function startMcpServer() {
         await server.connect(transport);
         
         // Log the server info
-        console.log(`WooCommerce MCP Server v1.0.0 started successfully`);
+        console.log(`WooCommerce MCP Server v1.0.5 started successfully`);
         console.log(`Connected to: ${process.env.WORDPRESS_SITE_URL}`);
         console.log(`Available tools: ${toolsCount}`);
         

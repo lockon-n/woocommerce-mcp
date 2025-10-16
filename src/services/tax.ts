@@ -26,7 +26,7 @@ export class TaxService extends BaseService {
     // Tax rates
     async listTaxRates(params: TaxRateParams) {
         return this.handleRequest(
-            this.client.get('/taxes', { params })
+            this.client.get('/taxes', { params: this.toSnakeCase(params) })
         );
     }
 
