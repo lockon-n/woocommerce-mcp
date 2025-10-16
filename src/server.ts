@@ -18,7 +18,7 @@ export async function startMcpServer() {
     const server = new Server(
         {
             name: 'woocommerce-mcp-server',
-            version: '1.0.5',
+            version: '1.0.6',
         },
         {
             capabilities: {
@@ -1228,7 +1228,7 @@ export async function startMcpServer() {
         await server.connect(transport);
         
         // Log the server info
-        console.log(`WooCommerce MCP Server v1.0.5 started successfully`);
+        console.log(`WooCommerce MCP Server v1.0.6 started successfully`);
         console.log(`Connected to: ${process.env.WORDPRESS_SITE_URL}`);
         console.log(`Available tools: ${toolsCount}`);
         
